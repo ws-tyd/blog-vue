@@ -41,6 +41,7 @@ export default {
       message: '',
       targetUser:'',
       key:'',
+      type:'',
       friendsList:[]
     }
   },
@@ -52,10 +53,11 @@ export default {
   },
   methods: {
     send(){
-      this.sendMsg(JSON.stringify({user1:this.user.userId.toString(),user2:this.targetUser.toString(),data:{user:this.user.userId.toString(),msg:this.message,time:new Date().getTime().toString()}}))
+      this.sendMsg(JSON.stringify({user1:this.user.userId.toString(),type:this.type,user2:this.targetUser.toString(),data:{user:this.user.userId.toString(),msg:this.message,time:new Date().getTime().toString()}}))
     },
     changeTarget(target){
       this.targetUser = target.userId
+      this.type = 'UserMessage'
       this.key = "taskID"+this.user.userId+target.userId
       console.log(this.history[this.key])
     },

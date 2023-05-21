@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     getFanAndFollowList(){
-      this.$store.dispatch('updateFanAndFollowList')
+      this.$store.dispatch('getFanListAndFollowList')
     },
     searchKey() {
       searchUser({key: this.key}).then(resp => {

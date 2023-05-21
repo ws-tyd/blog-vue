@@ -17,3 +17,7 @@ export async function queryFriendInIds(ids){
     const {data} = await axios.get('api/friends/queryFriendInIds/'+ids)
     return data
 }
+export async function getMessageSessionID(userId){
+    const {data} = await axios.get('api/friends/getMessageSessionID/'+userId)
+    return data
+}

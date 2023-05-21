@@ -115,7 +115,8 @@ export default {
       return false
     }
   },
-  async updateFanAndFollowList({dispatch}){
+  //获取用户关注列表和粉丝列表
+  async getFanListAndFollowList({dispatch}){
     try {
       dispatch('getFanList')
       dispatch('getFollowList')
