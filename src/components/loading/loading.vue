@@ -1,6 +1,6 @@
 <template>
-  <div class="loading_main">
-    <div class="loading">
+  <div class="loading_main" id="load">
+    <div class="loading" >
       <span>loading.....</span>
     </div>
   </div>
@@ -19,7 +19,7 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: #1B1464;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;

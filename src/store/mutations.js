@@ -9,7 +9,6 @@ export default {
         state.username = userName;
     },
     saveUserInfo(state, user) {
-        console.log(user)
         setSession("user", JSON.stringify(user))
         state.user = user;
     },

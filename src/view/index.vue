@@ -9,6 +9,7 @@
 
 <script>
 import {mapGetters} from "vuex";
+import {getIntRandom} from "../utils/baseUtil";
 
 export default {
   name: "index",
@@ -18,15 +19,17 @@ export default {
     }
   },
   mounted() {
-    this.bi()
     this.imageList = this.picArray.slice(0,3)
+    this.bi()
   },
   computed: {
     ...mapGetters(["picArray"])
   },
   methods:{
     bi(){
-      const background = document.getElementById('background')
+      let background = document.getElementById('background')
+      let pic = this.picArray[getIntRandom(this.picArray.length)]
+      background.style.backgroundImage = `url("${pic}")`
       document.addEventListener('scroll',()=>{
         const  scrollY = window.scrollY
         if (scrollY!==0){

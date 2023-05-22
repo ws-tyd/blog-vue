@@ -1,24 +1,64 @@
 <template>
   <div class="taskBox">
     <div class="left">
-      <div  class="friendsItem">
-        <div class="friendsBox" v-for="(item ,index) in friendsList" @click="changeTarget(item)">
-          <div>
-            <img :src="item.avatarUrl" :alt="item.username" width="50" height="50" class="image">
+      <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse-item title="关注列表" name="1">
+          <div class="friendsItem">
+            <div class="friendsBox" v-for="(item ,index) in followLists" @click="changeTarget(item)">
+              <div>
+                <img :src="item.avatarUrl" :alt="item.username" width="50" height="50" class="image">
+              </div>
+              <div class="rightBox">
+                <div>{{ item.username }}</div>
+                <div
+                    style="white-space: nowrap;overflow: hidden;color: #0f95be;font-size: 0.5em;text-overflow: ellipsis">
+                  {{ item.info }}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="rightBox">
-            <div>{{item.username}}</div>
-            <div style="white-space: nowrap;overflow: hidden;color: #0f95be;font-size: 0.5em;text-overflow: ellipsis">{{item.info}}</div>
+        </el-collapse-item>
+        <el-collapse-item title="粉丝列表" name="2">
+          <div class="friendsItem">
+            <div class="friendsBox" v-for="(item ,index) in friendsList" @click="changeTarget(item)">
+              <div>
+                <img :src="item.avatarUrl" :alt="item.username" width="50" height="50" class="image">
+              </div>
+              <div class="rightBox">
+                <div>{{ item.username }}</div>
+                <div
+                    style="white-space: nowrap;overflow: hidden;color: #0f95be;font-size: 0.5em;text-overflow: ellipsis">
+                  {{ item.info }}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
     <div class="content">
-      <div class="messageBox" v-show="targetUser">
-        <span v-for="(item,index) in history[key]" :key="index">{{item}}</span>
+      <div class="messageBox" v-show="targetUser" id="messageBox">
+        <span v-for="(item,index) in history[key]" :key="index">
+          <div class="otherInfoBox" v-if="user.userId!==JSON.parse(item).user">
+               <div class="avatar">
+                <img :src="otherAvatarUrl" :alt="item.username" width="50" height="50" class="image">
+              </div>
+              <div class="infoBox">
+                <spam>{{ JSON.parse(item).msg }}</spam>
+              </div>
+          </div>
+          <div class="myInfoBox" v-else>
+                 <div class="infoBox">
+                <spam>{{ JSON.parse(item).msg }}</spam>
+              </div>
+                 <div class="avatar">
+                <img :src="this.user.avatarUrl" :alt="item.username" width="50" height="50" class="image">
+              </div>
+          </div>
+        </span>
       </div>
       <div class="footer" v-show="targetUser">
-        <el-input v-model="message" @keydown.enter="send"></el-input>
+        <el-input :rows="2" type="textarea" v-model="message" show-word-limit maxlength="2000" @keydown.ctrl.enter="send"></el-input>
         <el-button @click="send">发送</el-button>
       </div>
     </div>
@@ -29,45 +69,69 @@
 import {taskMixins} from "../../../utils/mixins";
 import {mapGetters} from "vuex";
 import axios from "axios";
-import {queryFriendInIds} from "../../../api/friends";
+import {getMessageSessionID, queryFriendInIds} from "../../../api/friends";
 
 export default {
   name: "task",
   mixins: [taskMixins],
-  setup(){
+  setup() {
   },
   data() {
     return {
       message: '',
-      targetUser:'',
-      key:'',
-      type:'',
-      friendsList:[]
+      otherAvatarUrl: '',
+      activeNames: '1',
+      targetUser: '',
+      key: '',
+      type: '',
+      friendsList: [],
+      followLists: [],
     }
   },
-  computed:{
-    ...mapGetters(['fanList','user'])
+  computed: {
+    ...mapGetters(['fanList', 'user', 'followList'])
   },
   mounted() {
     this.getFriendList()
   },
   methods: {
-    send(){
-      this.sendMsg(JSON.stringify({user1:this.user.userId.toString(),type:this.type,user2:this.targetUser.toString(),data:{user:this.user.userId.toString(),msg:this.message,time:new Date().getTime().toString()}}))
+    async send() {
+      await this.sendMsg(JSON.stringify({
+        user1: this.user.userId, type: this.type, user2: this.targetUser,
+        data: {user: this.user.userId, msg: this.message, time: new Date().getTime().toString(), status: 0}
+      }))
+      this.message = ''
+      this.updateMessage(this.targetUser)
     },
-    changeTarget(target){
+    handleChange(val) {
+    },
+    async changeTarget(target) {
       this.targetUser = target.userId
+      this.otherAvatarUrl = target.avatarUrl
       this.type = 'UserMessage'
-      this.key = "taskID"+this.user.userId+target.userId
-      console.log(this.history[this.key])
+      await this.updateMessage(target.userId)
     },
-    getFriendsInfoList(){
-      queryFriendInIds(this.fanList).then(resp=>{
+    updateMessage(target) {
+      this.key = "taskID" + this.user.userId + target
+      let messageBox = document.getElementById('messageBox')
+      messageBox.scrollTop = messageBox.scrollHeight
+      //  getMessageSessionID(target).then(resp=>{
+      //   this.key = resp;
+      //    console.log(this.key,1)
+      // })
+
+    },
+    getFriendsInfoList() {
+      queryFriendInIds(this.fanList).then(resp => {
         this.friendsList = resp
       })
+      queryFriendInIds(this.followList).then(resp => {
+        this.followLists = resp
+      })
     },
-    async getFriendList(){
-      await this.$store.dispatch('getFanList')
+
+    async getFriendList() {
+      await this.$store.dispatch('getFanListAndFollowList')
       this.getFriendsInfoList()
     }
   }
@@ -75,16 +139,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.taskBox{
+.taskBox {
   display: flex;
   width: 100%;
+  height: 600px;
   padding: 20px;
   box-sizing: border-box;
   background-color: whitesmoke;
-  .left{
+
+  .left {
     flex: 3;
     border: 1px darkgray solid;
-    .friendsItem{
+
+    .friendsItem {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -93,17 +160,20 @@ export default {
       padding: 5px;
       font-size: 1em;
       box-sizing: border-box;
-      .friendsBox{
+      overflow-y: auto;
+      .friendsBox {
         display: flex;
         background: #ffffff;
         justify-content: space-around;
         align-items: center;
         margin: 5px;
-        .image{
+
+        .image {
           border-radius: 50%;
           object-fit: cover;
         }
-        .rightBox{
+
+        .rightBox {
           cursor: pointer;
           display: flex;
           width: 60%;
@@ -114,20 +184,77 @@ export default {
       }
     }
   }
-  .content{
+
+  .content {
     position: relative;
     flex: 7;
     border: 1px darkgray solid;
-    .messageBox{
+    width: 100%;
+    height: 100%;
+    .messageBox {
+      width: 100%;
+      height: 92%;
+      min-height: 92%;
+      padding: 10px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
+      .otherInfoBox {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin: 5px;
+        .avatar{
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .infoBox{
+          display: block;
+          max-width: 30%;
+          min-width: 100px;
+          word-break: break-all;
+          background: #16b5e5;
+          padding: 5px;
+          box-sizing: border-box;
+          margin-left:10px;
+          box-shadow: #0f95be 0 0 5px 2px ;
+        }
+      }
+
+      .myInfoBox {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        margin: 5px;
+        .avatar{
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .infoBox{
+          display: block;
+          max-width: 30%;
+          min-width: 100px;
+          word-break:break-all;
+          background: #16b5e5;
+          padding: 5px;
+          box-sizing: border-box;
+          margin-right:10px;
+          box-shadow: #0f95be 0 0 5px 2px ;
+        }
+      }
     }
-    .footer{
+
+    .footer {
       display: flex;
       width: 100%;
       position: absolute;
-      bottom: 0;
-      ::v-deep .el-input__inner{
+      bottom:0;
+      ::v-deep .el-input__inner {
         width: 70%;
       }
     }

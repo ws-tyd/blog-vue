@@ -10,6 +10,15 @@ class loadTemplate{
     static open(el){
         document.getElementById(el).style.display = 'flex'
     }
+
+    static loading(el, time) {
+       let load =  document.getElementById(el)
+        load.style.display = 'flex'
+        setTimeout(()=>{
+            load.style.display = 'none'
+        },time)
+
+    }
 }
 
 

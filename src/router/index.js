@@ -10,6 +10,7 @@ const router =[
             {path:'search',name:"搜索",component:()=>import("../view/pages/search/search.vue")},
         ]},
     {path:'/head',name:'头部导航栏',component:()=>import('../components/nav/nav-head.vue')},
+    {path:'/manage',name:'后台页面',component:()=>import('../view/manageView/manageHome.vue')},
     {path:'/404',name:'404',component:()=>import('../components/exception/404.vue')},
     {path:'/:pathMatch(.*)',redirect: '/404'},
 ]

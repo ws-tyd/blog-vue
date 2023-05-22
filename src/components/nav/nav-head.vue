@@ -49,11 +49,27 @@
           </span>
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">消息</span>
         </span>
+        <!--登录-->
+        <span v-if="this.user===null" class="menu_item" @click="routerChange('/pages/login',6)" :class="{active:activeItem==6}">
+          <span class="item_ico">
+            <svg t="1684673325933" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2411" width="32" height="32"><path d="M614.015 562.226H409.928c-191.021 0-346.487 153.046-346.487 341.29v20.07C63.441 1024 216.36 1024 409.928 1024h204.087c185.927 0 346.46 0 346.5-100.413v-20.121c0-188.156-155.48-341.291-346.5-341.291zM501.77 0C350.075 0 226.7 121.566 226.7 271.02s123.323 271.047 275.07 271.047S776.84 420.475 776.84 271.02 653.454 0 501.771 0z" p-id="2412" fill="#707070"></path></svg>          </span>
+          <span style="line-height: 70px;font-size: 20px;font-weight: bold">登录</span>
+        </span>
+        <!--我的-->
+        <span class="menu_item" @click="routerChange('/manage',7)" :class="{active:activeItem==7}">
+          <div class="avatar">
+                <img :src="this.user.avatarUrl"  width="50" height="50" class="image">
+          </div>
+          <span style="line-height: 70px;font-size: 20px;font-weight: bold">{{this.user.username}}</span>
+        </span>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {mapGetters} from "vuex";
+import {loadTemplate} from "../../utils/baseUtil";
+
 export default {
   name: "nav-head",
   data(){
@@ -63,6 +79,9 @@ export default {
   },
   mounted() {
     this.scrollProgress()
+  },
+  computed:{
+    ...mapGetters(['isLogin','user'])
   },
   methods: {
     routerChange(path,active){
@@ -112,12 +131,19 @@ export default {
 
 .menu_item{
   display: flex;
+  align-items: center;
   justify-content: center;
   margin: 0px 5px 0px;
   padding: 5px;
   background-color: transparent;
   transition: background-color ease .4s;
   cursor: pointer;
+}
+.avatar{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 .active{
   background-color: #e7e312;
