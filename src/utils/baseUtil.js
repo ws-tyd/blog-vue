@@ -20,8 +20,6 @@ class loadTemplate{
 
     }
 }
-
-
 export  {
     getIntRandom,
     loadTemplate

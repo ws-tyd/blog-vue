@@ -18,7 +18,6 @@ export async function queryFriendInIds(ids){
     return data
 }
 export async function getMessageSessionID(userId){
-    console.log(userId)
     const {data} = await axios.get('api/friends/getMessageSessionID/'+userId)
     return data
 }

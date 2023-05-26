@@ -28,6 +28,7 @@ module.exports = {
             target: 'http://localhost:8080/limi',
             // target: 'http://192.168.6.93:8000',
             changeOrigin: true,
+            ws:true,
             rewrite: path => path.replace(/^\/api/, '')
         }
     },

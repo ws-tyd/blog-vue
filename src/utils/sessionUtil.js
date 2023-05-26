@@ -1,5 +1,4 @@
 const setSession = (key, value) => {
-    console.log(key)
     window.sessionStorage.setItem(key, value)
     localStorage.setItem(key, value)
 }

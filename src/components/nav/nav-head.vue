@@ -15,21 +15,21 @@
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">首页</span>
         </span>
         <!--标签-->
-        <span class="menu_item" @click="routerChange('/',1)" :class="{active:activeItem==1}">
+        <span class="menu_item" @click="routerChange('/pages/type',1)" :class="{active:activeItem==1}">
           <span class="item_ico">
             <svg t="1665151647187" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11299" width="32" height="32"><path d="M883.626667 145.493333l-5.12-5.12a44.8 44.8 0 0 0-30.293334-12.373333h-339.2a85.333333 85.333333 0 0 0-60.586666 25.173333l-308.053334 308.053334a42.666667 42.666667 0 0 0 0 60.16l362.24 362.24a42.666667 42.666667 0 0 0 60.16 0l308.053334-308.053334a85.333333 85.333333 0 0 0 25.173333-60.586666V175.786667a44.8 44.8 0 0 0-12.373333-30.293334zM682.666667 426.666667a85.333333 85.333333 0 1 1 85.333333-85.333334 85.333333 85.333333 0 0 1-85.333333 85.333334z" p-id="11300" fill="#8a8a8a"></path></svg>
           </span>
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">标签</span>
         </span>
         <!--分类-->
-        <span class="menu_item" @click="routerChange('/',2)" :class="{active:activeItem==2}">
+        <span class="menu_item" @click="routerChange('/pages/class',2)" :class="{active:activeItem==2}">
           <span class="item_ico">
             <svg t="1665151758200" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12407" width="32" height="32"><path d="M278.15 192.43h129.47a80 80 0 0 1 80 80v209.88H278.15a80 80 0 0 1-80-80V272.43a80 80 0 0 1 80-80zM752.31 482.31H542.84V272.43a80 80 0 0 1 80-80h129.47a80 80 0 0 1 80 80v129.88a80 80 0 0 1-80 80zM752.31 828.53H622.84a80 80 0 0 1-80-80V538.65h209.47a80 80 0 0 1 80 80v129.88a80 80 0 0 1-80 80zM278.15 538.64h209.47v209.88a80 80 0 0 1-80 80H278.15a80 80 0 0 1-80-80V618.64a80 80 0 0 1 80-80z" fill="#707070" p-id="12408"></path></svg>
           </span>
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">分类</span>
         </span>
         <!--关于-->
-        <span class="menu_item" @click="routerChange('/',3)" :class="{active:activeItem==3}">
+        <span class="menu_item" @click="routerChange('/pages/about',3)" :class="{active:activeItem==3}">
           <span class="item_ico">
             <svg t="1665151810752" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13493" width="32" height="32"><path d="M512 992C246.912 992 32 777.088 32 512 32 246.912 246.912 32 512 32c265.088 0 480 214.912 480 480 0 265.088-214.912 480-480 480z m-59.072-512v236.32a54.144 54.144 0 1 0 108.288 0V480a54.144 54.144 0 1 0-108.288 0z m53.76-226.464c-14.72 0-27.232 4.544-37.568 15.136-11.04 9.856-16.192 22.72-16.192 38.656 0 15.136 5.152 28 16.192 38.624 10.336 10.592 22.848 15.904 37.6 15.904a57.6 57.6 0 0 0 39.04-15.168c10.304-10.592 15.456-23.456 15.456-39.36s-5.12-28.8-15.456-38.656c-10.304-10.56-23.584-15.136-39.04-15.136z" p-id="13494" fill="#707070"></path></svg>
           </span>
@@ -50,17 +50,19 @@
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">消息</span>
         </span>
         <!--登录-->
-        <span v-if="this.user===null" class="menu_item" @click="routerChange('/pages/login',6)" :class="{active:activeItem==6}">
+        <span v-if="!this.isLogin" class="menu_item" @click="routerChange('/pages/login',6)" :class="{active:activeItem==6}">
           <span class="item_ico">
             <svg t="1684673325933" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2411" width="32" height="32"><path d="M614.015 562.226H409.928c-191.021 0-346.487 153.046-346.487 341.29v20.07C63.441 1024 216.36 1024 409.928 1024h204.087c185.927 0 346.46 0 346.5-100.413v-20.121c0-188.156-155.48-341.291-346.5-341.291zM501.77 0C350.075 0 226.7 121.566 226.7 271.02s123.323 271.047 275.07 271.047S776.84 420.475 776.84 271.02 653.454 0 501.771 0z" p-id="2412" fill="#707070"></path></svg>          </span>
           <span style="line-height: 70px;font-size: 20px;font-weight: bold">登录</span>
         </span>
         <!--我的-->
-        <span class="menu_item" @click="routerChange('/manage',7)" :class="{active:activeItem==7}">
-          <div class="avatar">
-                <img :src="this.user.avatarUrl"  width="50" height="50" class="image">
-          </div>
-          <span style="line-height: 70px;font-size: 20px;font-weight: bold">{{this.user.username}}</span>
+        <span v-else class="menu_item" @click="routerChange('/manage',7)" :class="{active:activeItem==7}">
+          <floating-window>
+            <div class="avatar">
+                  <img :src="this.user.avatarUrl"  width="50" height="50" class="image">
+            </div>
+            <span style="line-height: 70px;font-size: 20px;font-weight: bold">{{this.user.username}}</span>
+          </floating-window>
         </span>
       </div>
     </div>
@@ -69,12 +71,24 @@
 <script>
 import {mapGetters} from "vuex";
 import {loadTemplate} from "../../utils/baseUtil";
+import FloatingWindow from "../floatingWindow/floatingWindow.vue";
 
 export default {
   name: "nav-head",
+  components: {FloatingWindow},
   data(){
     return{
-      activeItem: 0
+      activeItem: 0,
+      activeMap:{
+        '#/':0,
+        '#/pages/type':1,
+        '#/pages/class':2,
+        '#/pages/about':3,
+        '#/pages/search':4,
+        '#/pages/task':5,
+        '#/pages/login':6,
+        '#/manage':7,
+      }
     }
   },
   mounted() {
@@ -93,6 +107,9 @@ export default {
       this.$router.push(path)
     },
     scrollProgress(){
+      this.activeItem = this.activeMap[window.location.hash]
+      console.log(this.activeMap[window.location.hash])
+      console.log(this.activeItem)
       let scrollProgress = document.getElementById('scroll_progress_bar')
       let navHead = document.getElementById('navHead');
       document.addEventListener('scroll',()=>{
@@ -143,14 +160,48 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  object-fit: cover;
   overflow: hidden;
 }
+/*.infoBox{*/
+/*  display: none;*/
+/*  position: absolute;*/
+/*  top: 60px;*/
+/*  width: 0;*/
+/*  height: 0;*/
+/*  background: #0f95be;*/
+/*  border-radius: 20px;*/
+/*  padding: 10px;*/
+/*  box-shadow: #0f95be 0 0 8px 4px;*/
+/*  animation: ease-in-out k1 0.5s;*/
+/*}*/
+/*.myBox{*/
+
+/*}*/
+/*@keyframes k1 {*/
+/*  0%{*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    top: 100px;*/
+/*  }*/
+/*  100%{*/
+/*    width: 300px;*/
+/*    height: 200px;*/
+/*    top: 60px;*/
+/*  }*/
+/*}*/
+/*.myBox:hover .infoBox{*/
+/*  display: flex;*/
+/*  width: 300px;*/
+/*  height: 200px;*/
+/*}*/
 .active{
   background-color: #e7e312;
 }
 .menu_item:hover{
   background-color: #16b5e5;
 }
+
 .title {
   text-align: center;
   font-size: 2em;

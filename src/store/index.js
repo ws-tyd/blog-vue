@@ -19,13 +19,14 @@ const state = {
     fanList: [],
     followList: [],
     username: '',
-    isLogin: '',//登录用0
+    isLogin: false,//登录用0
     role: '',
     Authorization: '',
     picArray: [],
     picInfoArray: [],
     slideVerifyArray: [],//验证用的图片
     slideVerifyArrayInfo: [],//验证用的图片
+    taskHistory: {},//聊天记录
 }
 export default createStore({
     state,

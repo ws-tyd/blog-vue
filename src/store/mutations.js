@@ -49,5 +49,9 @@ export default {
     saveFollowList(state, val) {
         setSession("FollowList", val)
         state.followList = val;
+    },
+    saveTaskHistory(state, val) {
+        setSession("taskHistory", val)
+        state.taskHistory = val;
     }
 }

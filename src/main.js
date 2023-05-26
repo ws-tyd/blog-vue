@@ -6,6 +6,7 @@ import ElementPlus from 'element-plus'
 import {ElMessage} from 'element-plus'
 import axios from "./utils/request/index";
 import store from "./store/index.js";
+import ws from "./utils/request/websocketConfig.js";
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
@@ -19,4 +20,5 @@ vue.use(store)
 vue.use(router)
 vue.use(ElementPlus)
 vue.config.globalProperties.axios = axios
+vue.config.globalProperties.webSocket = ws
 vue.mount('#app')

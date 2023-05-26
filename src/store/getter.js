@@ -11,4 +11,5 @@ export default {
     picInfoArray:state=>state.picInfoArray||{},
     fanList:state=>state.fanList||{},
     followList:state=>state.followList||{},
+    taskHistory:state=>state.taskHistory||{},
 }

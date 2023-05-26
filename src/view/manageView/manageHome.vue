@@ -1,7 +1,12 @@
 <template>
-<div>
-  后台首页
-</div>
+    <div class="manageContext">
+      <el-container>
+        <el-aside width="1200px">
+
+        </el-aside>
+        <el-main>Main</el-main>
+      </el-container>
+    </div>
 </template>
 
 <script>
@@ -14,6 +19,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.manageContext{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #0f95be;
+}
 </style>

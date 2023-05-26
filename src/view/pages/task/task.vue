@@ -2,9 +2,12 @@
   <div class="taskBox">
     <div class="left">
       <el-collapse v-model="activeNames" @change="handleChange">
-        <el-collapse-item title="关注列表" name="1">
+        <el-collapse-item name="1">
+          <template #title>
+            <span style="text-align: center;width: 50%">关注列表</span>
+          </template>
           <div class="friendsItem">
-            <div class="friendsBox" v-for="(item ,index) in followLists" @click="changeTarget(item)">
+            <div class="friendsBox" v-for="(item ,index) in this.fanList" @click="changeTarget(item)">
               <div>
                 <img :src="item.avatarUrl" :alt="item.username" width="50" height="50" class="image">
               </div>
@@ -18,9 +21,12 @@
             </div>
           </div>
         </el-collapse-item>
-        <el-collapse-item title="粉丝列表" name="2">
+        <el-collapse-item name="2">
+          <template #title>
+            <span style="text-align: center;width: 50%">粉丝列表</span>
+          </template>
           <div class="friendsItem">
-            <div class="friendsBox" v-for="(item ,index) in friendsList" @click="changeTarget(item)">
+            <div class="friendsBox" v-for="(item ,index) in this.followList" @click="changeTarget(item)">
               <div>
                 <img :src="item.avatarUrl" :alt="item.username" width="50" height="50" class="image">
               </div>
@@ -38,7 +44,7 @@
     </div>
     <div class="content">
       <div class="messageBox" v-show="targetUser" id="messageBox">
-        <span v-for="(item,index) in history[key]" :key="index">
+        <span v-for="(item,index) in taskHistory[key]" :key="index">
           <div class="otherInfoBox" v-if="user.userId!==JSON.parse(item).user">
                <div class="avatar">
                 <img :src="otherAvatarUrl" :alt="item.username" width="50" height="50" class="image">
@@ -73,7 +79,6 @@ import {getMessageSessionID, queryFriendInIds} from "../../../api/friends";
 
 export default {
   name: "task",
-  mixins: [taskMixins],
   setup() {
   },
   data() {
@@ -81,22 +86,21 @@ export default {
       message: '',
       otherAvatarUrl: '',
       activeNames: '1',
+      history:{},
       targetUser: '',
       key: '',
       type: '',
-      friendsList: [],
-      followLists: [],
     }
   },
   computed: {
-    ...mapGetters(['fanList', 'user', 'followList'])
+    ...mapGetters(['fanList', 'user', 'followList',"taskHistory"])
   },
   mounted() {
     this.getFriendList()
   },
   methods: {
     async send() {
-      await this.sendMsg(JSON.stringify({
+      await this.webSocket.ws.send(JSON.stringify({
         user1: this.user.userId, type: this.type, user2: this.targetUser,
         data: {user: this.user.userId, msg: this.message, time: new Date().getTime().toString(), status: 0}
       }))
@@ -115,24 +119,9 @@ export default {
       this.key = "taskID" + this.user.userId + target
       let messageBox = document.getElementById('messageBox')
       messageBox.scrollTop = messageBox.scrollHeight
-      //  getMessageSessionID(target).then(resp=>{
-      //   this.key = resp;
-      //    console.log(this.key,1)
-      // })
-
     },
-    getFriendsInfoList() {
-      queryFriendInIds(this.fanList).then(resp => {
-        this.friendsList = resp
-      })
-      queryFriendInIds(this.followList).then(resp => {
-        this.followLists = resp
-      })
-    },
-
     async getFriendList() {
       await this.$store.dispatch('getFanListAndFollowList')
-      this.getFriendsInfoList()
     }
   }
 }

@@ -18,7 +18,6 @@ export default {
     ...mapGetters(['picArray'])
   },
   mounted() {
-    console.log(Math.floor(Math.random()*this.picArray.length))
     this.imageUrl = this.picArray[Math.floor(Math.random()*this.picArray.length)]
   }
 }

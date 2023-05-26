@@ -4,6 +4,7 @@
 import axios from "axios";
 import {clearSession} from '../utils/sessionUtil.js'
 import {queryAllImagePage} from "../api/picApi";
+import {queryFriendInIds} from "../api/friends";
 export default {
   saveUserName(context,userName){
     context.commit('saveUserName', userName);
@@ -98,7 +99,7 @@ export default {
   //获取粉丝列表
   async getFanList({dispatch,commit}) {
     try {
-      const {data} = await axios.get('/api/friends/fanList')
+      const {data} = await axios.get('/api/friends/fanLists')
       commit('saveFanList',data);
       return true
     }catch (e){
@@ -108,7 +109,7 @@ export default {
   //获取关注者列表
   async getFollowList({dispatch,commit}) {
     try {
-      const  {data} = await axios.get('/api/friends/followList')
+      const  {data} = await axios.get('/api/friends/followLists')
       commit('saveFollowList',data)
       return true
     }catch (e){
@@ -124,5 +125,5 @@ export default {
     }catch (e){
       return false
     }
-  }
+  },
 }
